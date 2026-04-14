@@ -5,14 +5,14 @@ import { ZodType } from "zod";
 /**
  * 多模型架构：
  * - DeepSeek: 主模型选项1（用于大部分节点，支持 Function Calling）
- * - GLM: 主模型选项2（智谱 AI，支持 Function Calling）
+ * - KIMI: 主模型选项2（Moonshot AI，支持 Function Calling）
  * - Qwen-VL: Vision 模型（仅用于图片分析）
  *
- * 通过环境变量 MAIN_MODEL_PROVIDER 切换主模型：deepseek | glm
+ * 通过环境变量 MAIN_MODEL_PROVIDER 切换主模型：deepseek | kimi
  */
 
 let deepseekInstance: ChatOpenAI | null = null;
-let glmInstance: ChatOpenAI | null = null;
+let kimiInstance: ChatOpenAI | null = null;
 let qwenVisionInstance: ChatOpenAI | null = null;
 
 /**
@@ -35,23 +35,23 @@ export function getDeepSeekModel() {
 }
 
 /**
- * 获取 GLM 主模型实例（智谱 AI）
+ * 获取 KIMI 主模型实例（Moonshot AI）
  * 支持 Function Calling，结构化输出能力强
  */
-export function getGLMModel() {
-  if (!glmInstance) {
-    glmInstance = new ChatOpenAI({
-      model: process.env.GLM_MODEL || "glm-4-flash",
-      apiKey: process.env.GLM_API_KEY,
+export function getKIMIModel() {
+  if (!kimiInstance) {
+    kimiInstance = new ChatOpenAI({
+      model: process.env.KIMI_MODEL || "moonshot-v1-8k",
+      apiKey: process.env.KIMI_API_KEY,
       temperature: 0,
       maxTokens: 8192,
       configuration: {
         baseURL:
-          process.env.GLM_BASE_URL || "https://open.bigmodel.cn/api/paas/v4/",
+          process.env.KIMI_BASE_URL || "https://api.moonshot.cn/v1",
       },
     });
   }
-  return glmInstance;
+  return kimiInstance;
 }
 
 /**
@@ -77,15 +77,15 @@ export function getQwenVisionModel() {
 
 /**
  * 获取当前配置的主模型
- * 根据环境变量 MAIN_MODEL_PROVIDER 切换：deepseek | glm
+ * 根据环境变量 MAIN_MODEL_PROVIDER 切换：deepseek | kimi
  */
 export function getMainModel() {
   const provider = process.env.MAIN_MODEL_PROVIDER || "deepseek";
 
   switch (provider.toLowerCase()) {
-    case "glm":
-      console.log("[Model] Using GLM as main model");
-      return getGLMModel();
+    case "kimi":
+      console.log("[Model] Using KIMI as main model");
+      return getKIMIModel();
     case "deepseek":
     default:
       console.log("[Model] Using DeepSeek as main model");

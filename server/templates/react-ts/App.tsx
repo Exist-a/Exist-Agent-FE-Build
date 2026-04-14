@@ -38,7 +38,7 @@ export default function App() {
           </div>
         </div>
 
-        <p className="text-sm text-gray-400">Powered by Duyi Figma Make</p>
+        <p className="text-sm text-gray-400">Powered by Exist-Agent-FE-Build</p>
       </div>
     </div>
   );

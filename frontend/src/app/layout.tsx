@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Duyi Figma Make",
+  title: "Exist-Agent-FE-Build",
   description: "AI-powered React component generator",
   icons: {
     icon: "/logo.ico",
